@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -38,9 +39,11 @@ import com.example.chatbot.ui.theme.GeminiColorMensaje
 fun ChatPage(modifier: Modifier = Modifier, viewModel: ChatViewModel) {
     Column(modifier = modifier){
         AppHeader()
-        MessageList(modifier = Modifier.weight(1f),messageList = viewModel.listaMensajes)
-        MessageInput(onMessageSend = {
-            viewModel.sendMessage(it)
+        MessageList(
+            modifier = Modifier.weight(1f),
+            messageList = viewModel.listaMensajes)
+        MessageInput(
+            onMessageSend = {viewModel.sendMessage(it)
         })
     }
 }
@@ -48,11 +51,11 @@ fun ChatPage(modifier: Modifier = Modifier, viewModel: ChatViewModel) {
 @Composable
 fun MessageList(modifier: Modifier = Modifier, messageList: List<ModeloMensaje>){
     LazyColumn (
-        modifier = Modifier,
-        reverseLayout = true
+        modifier = modifier,
+        reverseLayout = true,
+        contentPadding = PaddingValues(bottom = 72.dp)
     ) {
         items(messageList.reversed()){
-            //Text(text = it.message)
             MessageRow(messageModel = it)
         }
     }
@@ -60,7 +63,7 @@ fun MessageList(modifier: Modifier = Modifier, messageList: List<ModeloMensaje>)
 
 @Composable
 fun MessageRow(messageModel: ModeloMensaje){
-    val isModel = messageModel.rol=="gemini"
+    val isModel = messageModel.rol=="model"
     Row(
         verticalAlignment = Alignment.CenterVertically
     ){
@@ -68,8 +71,8 @@ fun MessageRow(messageModel: ModeloMensaje){
             modifier = Modifier.fillMaxWidth()
         ){
             Box(
-                modifier = Modifier.align(
-                    if(isModel) Alignment.BottomStart else Alignment.BottomEnd
+                modifier = Modifier
+                    .align(if(isModel) Alignment.BottomStart else Alignment.BottomEnd
                 )
                     .padding(
                         start = if(isModel) 8.dp else 70.dp,
@@ -98,24 +101,35 @@ fun MessageInput(onMessageSend: (String)->Unit) {
     var mensaje by remember {
         mutableStateOf("")
     }
-    Row(
-        modifier = Modifier.fillMaxWidth().padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ){
-        OutlinedTextField(
-            value = mensaje,
-            onValueChange = {mensaje = it},
-            modifier = Modifier.weight(1f),
-            label = {Text("Type your question...")},
-            singleLine = true
-        )
-        IconButton(onClick = {
-            if(mensaje.isNotEmpty()) {
-                onMessageSend(mensaje)
-                mensaje = ""
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surface)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            OutlinedTextField(
+                value = mensaje,
+                onValueChange = { mensaje = it },
+                modifier = Modifier.weight(1f)
+                    .padding(bottom = 16.dp),
+                label = { Text("Escribe aqui...") },
+                singleLine = false,
+                maxLines = 3
+            )
+            IconButton(
+                onClick = {
+                    if (mensaje.isNotEmpty()) {
+                        onMessageSend(mensaje)
+                        mensaje = ""
+                    }
+                },
+                modifier = Modifier.padding(bottom = 16.dp)
+            ) {
+                Icon(imageVector = Icons.Default.Send, contentDescription = "Send")
             }
-        }){
-            Icon(imageVector = Icons.Default.Send,contentDescription = "Send")
         }
     }
 }
@@ -123,8 +137,15 @@ fun MessageInput(onMessageSend: (String)->Unit) {
 @Composable
 fun AppHeader() {
     Box(
-        modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.primary)
-    ){
-        Text(modifier = Modifier.padding(16.dp),text = "Real Bot",color = Color.White, fontSize = 22.sp)
+        modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.primaryContainer),
+        contentAlignment = Alignment.Center // Esto centra el contenido del Box
+    ) {
+        Text(
+            modifier = Modifier.padding(16.dp),
+            //Alignment = Alignment.CenterHorizontally,
+            text = "Mi ChatBot",
+            color = Color.Black,
+            fontSize = 22.sp
+        )
     }
 }

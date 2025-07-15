@@ -9,6 +9,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
@@ -56,3 +57,8 @@ fun ChatBotTheme(
         content = content
     )
 }
+val MyColorScheme = lightColorScheme(
+    primary = Color(0xFF6200EE),
+    primaryContainer = Color(0xFFBB86FC),
+    // otros colores...
+)

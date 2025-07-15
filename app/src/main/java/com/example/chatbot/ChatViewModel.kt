@@ -16,17 +16,17 @@ class ChatViewModel : ViewModel() {
 
     val generativeModel: GenerativeModel = GenerativeModel(
         modelName = "gemini-1.5-flash-latest",
-        //modelName = "gemini-pro",
         apiKey = Constants.apiKey
+        //apiKey = "api-fake"
     )
 
    fun sendMessage(question: String) {
         viewModelScope.launch {
             try {
-                listaMensajes.add(ModeloMensaje(question, "usuario"))
+                listaMensajes.add(ModeloMensaje(question, "user"))
                 Log.d("ChatViewModel", "Added user message to list.")
 
-                listaMensajes.add(ModeloMensaje("escribiendo...", "gemini"))
+                listaMensajes.add(ModeloMensaje("escribiendo...", "model"))
                 Log.d("ChatViewModel", "Added model message to list.")
 
                 val chat = generativeModel.startChat(
@@ -36,8 +36,8 @@ class ChatViewModel : ViewModel() {
                 )
                 //Log.d("ChatViewModelq",question)
                 val respuesta = chat.sendMessage(question)
-               //Log.d("ChatViewModel", "API response received.")
-                Log.d("respuesta", "llega hasta aqui")
+               Log.d("ChatViewModel", "API response received.")
+               // Log.d("respuesta", "llega hasta aqui")
 
 
                 val respuestaGemini = respuesta.text
@@ -45,38 +45,19 @@ class ChatViewModel : ViewModel() {
                listaMensajes.removeAt(listaMensajes.lastIndex)
 
                 if (respuestaGemini != null) {
-                    listaMensajes.add(ModeloMensaje(respuestaGemini, "gemini"))
+                    listaMensajes.add(ModeloMensaje(respuestaGemini, "model"))
                     Log.i("Gemini", "Bot response added: \"$respuestaGemini\"")
                 } else {
-                    listaMensajes.add(ModeloMensaje("Lo siento,tengo problemas para responder.", "gemini"))
+                    listaMensajes.add(ModeloMensaje("Lo siento,tengo problemas para responder.", "model"))
                 }
 
             } catch (e: Exception) {
-                Log.e("Gemini Error", "Error: ${e.message}", e)
-                listaMensajes.add(ModeloMensaje("Error: No pude obtener una respuesta,intenta de nuevo.", "gemini"))
+                Log.e("Gemini Error", "Error: ${e.message}", e)//
+                listaMensajes.add(ModeloMensaje("Error: No pude obtener una respuesta,intenta de nuevo.", "model"))
             }
         }
-
-            }
+   }
 }
 
 
 
-//fun sendMessage(question: String) {
-//    viewModelScope.launch {
-//        try {
-//            // Paso 1: Verificar conexión básica
-//            val testResponse = generativeModel.generateContent("Responde 'OK' si estás funcionando")
-//            Log.d("TestConnection", "Response: ${testResponse.text}")
-//
-//            // Paso 2: Si lo anterior funciona, probar con chat
-//            val chat = generativeModel.startChat()
-//            val respuesta = chat.sendMessage(question)
-//            Log.d("ChatTest", "Response: ${respuesta.text}")
-//
-//            // Si llega aquí, el problema está en tu implementación original
-//        } catch (e: Exception) {
-//            Log.e("DiagnosticError", "Error completo:", e)
-//        }
-//    }
-//}

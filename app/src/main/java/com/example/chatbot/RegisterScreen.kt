@@ -1,5 +1,6 @@
 package com.example.chatbot
 
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -62,6 +63,7 @@ fun RegisterScreen(onRegisterSuccess: () -> Unit, onNavigateToLogin: () -> Unit)
             value = password,
             onValueChange = { password = it },
             label = { Text("Contraseña") },
+            visualTransformation = PasswordVisualTransformation(),
             singleLine = true
         )
 

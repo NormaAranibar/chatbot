@@ -57,7 +57,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    //dependencia para la navegacion de la aplicacion
+    //dependencia para la navegacion de la aplicacion(navigationCompopse)
     implementation("androidx.navigation:navigation-compose:2.9.1")
   // dependencia para la api de google(GEMINI)
     implementation("com.google.ai.client.generativeai:generativeai:0.9.0")

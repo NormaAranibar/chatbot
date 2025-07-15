@@ -14,6 +14,7 @@ fun GraficoDeNavegacion(navController: NavHostController) {
                 onLoginSuccess = { navController.navigate("chatbot") },
                 onNavigateToRegister = { navController.navigate("registro") }
             )
+
         }
 
         composable("registro") {
@@ -24,7 +25,7 @@ fun GraficoDeNavegacion(navController: NavHostController) {
         }
 
         composable("chatbot") {
-            ChatBotScreen()  // We'll wrap your ChatPage inside this in the next step
+            ChatBotScreen()
         }
     }
 }
